@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Indonesia Word Index | Sambung Kata</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 40px;
+        }
+
+        input {
+            width: 400px;
+            padding: 10px;
+            font-size: 18px;
+        }
+
+        #results {
+            margin-top: 20px;
+        }
+
+        .word {
+            padding: 4px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Cari Kata (Inisial) [Contoh : A]</h2>
+
+    <input type="text" id="searchBox" placeholder="Ketik huruf awal...">
+
+    <div id="results"></div>
+
+    <script>
+        const input = document.getElementById("searchBox");
+        const resultsDiv = document.getElementById("results");
+
+        input.addEventListener("input", async () => {
+            const value = input.value.trim();
+
+            if (!value) {
+                resultsDiv.innerHTML = "";
+                return;
+            }
+
+            const res = await fetch(`/api/search?prefix=${value}`);
+            const data = await res.json();
+
+            resultsDiv.innerHTML = "";
+
+            data.forEach(word => {
+                const div = document.createElement("div");
+                div.className = "word";
+                div.textContent = word;
+                resultsDiv.appendChild(div);
+            });
+        });
+    </script>
+
+</body>
+</html>
